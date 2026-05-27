@@ -8,7 +8,7 @@ st.title("⚽ Cotizador Panini 2026")
 st.markdown("Pega la lista de WhatsApp para cruzarla con el inventario en tiempo real.")
 
 # 2. Cargar inventario desde el CSV
-archivo_maestro = "Inventario_Panini_Mundial_2026 - Inventario_Master.csv"
+archivo_maestro = "Inventario_Panini_Mundial_2026 - Inventario_Master-2.csv"
 
 # st.cache_data guarda el Excel en la memoria para que la web cargue rapidísimo
 @st.cache_data
