@@ -3,12 +3,8 @@ import csv
 import re
 import os
 
-# ==========================================
-# 1. CONFIGURACIÓN DE LA PÁGINA Y PESTAÑA
-# ==========================================
 st.set_page_config(page_title="Panini Tracker Pro", page_icon="🏆", layout="centered")
 
-# --- INYECCIÓN DE CSS PARA DISEÑO PREMIUM ---
 st.markdown("""
     <style>
     /* Ocultar menú de Streamlit por defecto para que se vea como app propia */
@@ -50,23 +46,18 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ==========================================
-# 2. CABECERA Y BRANDING VISUAL
-# ==========================================
 col1, col2 = st.columns([1, 4])
 with col1:
     # Si subes tu logo.png a GitHub, cambia el enlace por "logo.png"
     # Por ahora, usamos un ícono de trofeo premium genérico temporal
-    st.image("https://cdn-icons-png.flaticon.com/512/3113/3113054.png", width=70) 
+    st.image("logo.png", width=70) 
 with col2:
     st.title("Panini Tracker Pro")
     st.caption("⚡️ Motor Inteligente de Cotización y Logística")
 
 st.divider()
 
-# ==========================================
-# 3. LÓGICA DEL INVENTARIO (Tu motor intacto)
-# ==========================================
+
 archivo_maestro = "Inventario_Panini_Mundial_2026 - Inventario_Master-2.csv"
 
 @st.cache_data
@@ -95,14 +86,11 @@ def cargar_inventario(ruta):
 
 inventario = cargar_inventario(archivo_maestro)
 
-# ==========================================
-# 4. INTERFAZ OPERATIVA DE LA APP
-# ==========================================
 if inventario:
     st.markdown("### 📥 Recepción de Pedidos")
     texto_whatsapp = st.text_area("Pega aquí la lista enviada por el cliente:", height=120, placeholder="Ej: MEX 1, FWC 2 y 5...")
 
-    if st.button("PROCESAR COTIZACIÓN 🚀"):
+    if st.button("PROCESAR COTIZACIÓN"):
         if not texto_whatsapp.strip():
             st.warning("⚠️ El campo está vacío. Pega una lista para procesar.")
         else:
@@ -143,16 +131,16 @@ if inventario:
                 else:
                     no_encontradas.append(f"❓ {estampa} -> Inválida")
 
-            # Despliegue de Resultados (Estilo Dashboard)
+            
             st.divider()
-            st.markdown("### 📊 Panel de Resultados")
+            st.markdown("### Panel de Resultados")
             col1, col2 = st.columns(2)
             with col1:
                 st.metric(label="Total Autorizado", value=f"${total_mxn:.2f} MXN")
             with col2:
                 st.metric(label="Piezas Separadas", value=len(disponibles))
 
-            # Diseño de las listas
+            
             if disponibles: 
                 with st.expander("✅ Ver piezas listas para entrega", expanded=True):
                     st.write("\n\n".join(disponibles))
@@ -163,15 +151,15 @@ if inventario:
                 with st.expander("🔍 Ver errores de lectura"):
                     st.write("\n\n".join(no_encontradas))
 
-            # Mensaje final pulido
+            
             st.divider()
-            st.markdown("### 📲 Mensaje de Cierre (Copia y pega)")
+            st.markdown("### Mensaje de Cierre (Copia y pega)")
             if total_mxn > 0:
-                mensaje = (f"¡Hola! Ya procesé tu lista en mi sistema. 🤖\n"
+                mensaje = (f"¡Hola! Ya procesé tu lista en mi sistema. \n"
                            f"Te logré apartar {len(disponibles)} estampas exactas.\n")
                 if agotadas or no_encontradas:
                     mensaje += f"(Solo faltaron {len(agotadas) + len(no_encontradas)} que volaron en rutas anteriores).\n"
-                mensaje += f"\nTu total cerrado es de *${total_mxn:.2f} MXN*.\n\n¿Me confirmas para armar tu paquete y coordinar la entrega en CUGS? 🚀"
+                mensaje += f"\nTu total cerrado es de *${total_mxn:.2f} MXN*.\n\n¿Me confirmas para armar tu paquete y coordinar la entrega"
                 st.code(mensaje, language="text")
             else:
                 st.info("¡Hola! Ya revisé el sistema, pero justo esas piezas se me agotaron hoy. ¡Te aviso en cuanto se actualice el inventario!")
